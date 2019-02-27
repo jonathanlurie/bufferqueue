@@ -96,6 +96,15 @@ class BufferQueue extends EventManager {
 
 
   /**
+   * Get the size of the queue for each priority level
+   * @return {array}
+   */
+  sizePerPriority() {
+    return this._pq.sizePerPriority()
+  }
+
+
+  /**
    * Note: this should be used as rarely as possible since it does not respect the logic
    * of a queue.
    * Remove an element. If null is returned, this means the element was not in the queue.

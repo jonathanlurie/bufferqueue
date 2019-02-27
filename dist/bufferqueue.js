@@ -127,7 +127,24 @@
   class PriorityQueue {
     constructor(levels=3) {
       this._qs = Array.from({length: levels}, () => new Queue());
+      this._probabilityMap = new Array(levels);
+      this._makeProbabilityMap();
+    }
 
+    _makeProbabilityMap() {
+      let levels = this._qs.length;
+      let factors = Array.from({length: levels}, (x, i) => 1/Math.pow(2,i));
+      let factorSum = factors.reduce((acc, x) => acc + x);
+
+      for(let i=0; i<levels; i++) {
+        this._probabilityMap[i] = factors[i] / factorSum;
+
+        if (i>0) {
+          this._probabilityMap[i] += this._probabilityMap[i-1];
+        }
+      }
+
+      console.log(this._probabilityMap);
     }
 
     /**
@@ -195,7 +212,7 @@
      * Get the the element with the highest priority and remove it from the queue
      * @return {string|null} can return null if the queue is empty
      */
-    pop() {
+    pop_ORIG() {
       for(let i=0; i<this._qs.length; i++) {
         if(!this._qs[i].isEmpty()) {
           return this._qs[i].pop()
@@ -203,6 +220,46 @@
       }
 
       return null
+    }
+
+
+    /**
+     * This version of pop relies on the probability map to make sure that some lower
+     * priorities items are getting popped every now and then, even if there are still
+     * elements in higher priority queues
+     */
+    pop() {
+      if(this.isEmpty()){
+        return null
+      }
+
+      let seed = Math.random();
+      let levelToPop = 0;
+      for(let i=0; i<this._qs.length; i++){
+        if(seed < this._probabilityMap[i]) {
+          levelToPop = i;
+          break
+        }
+      }
+
+      if(this._qs[levelToPop].isEmpty()) {
+
+        // going to higher priorities
+        for(let i=levelToPop; i==0; i--) {
+          if(!this._qs[i].isEmpty()) {
+            return this._qs[i].pop()
+          }
+        }
+
+        // going to lower priorities
+        for(let i=levelToPop; i<this._qs.length; i++) {
+          if(!this._qs[i].isEmpty()) {
+            return this._qs[i].pop()
+          }
+        }
+      }
+
+      return this._qs[levelToPop].pop()
     }
 
 
@@ -231,6 +288,15 @@
         s += this._qs[i].size();
       }
       return s
+    }
+
+
+    /**
+     * Get the size of the queue for each priority level
+     * @return {array}
+     */
+    sizePerPriority() {
+      return this._qs.map(q => q.size())
     }
 
 
@@ -405,6 +471,15 @@
      */
     size() {
       return this._pq.size()
+    }
+
+
+    /**
+     * Get the size of the queue for each priority level
+     * @return {array}
+     */
+    sizePerPriority() {
+      return this._pq.sizePerPriority()
     }
 
 
