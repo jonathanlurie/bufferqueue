@@ -233,8 +233,24 @@
         return null
       }
 
-      let seed = Math.random();
+      // if the first(s) priorities are empty, we dont want to have the random seed
+      // within their range, so we pad if to make sure it lands in an area corresponding
+      // to some non-empty priority level
+      let probPadding = 0;
+
+      for(let i=0; i<this._qs.length; i++){
+        if(this._qs[i].isEmpty()){
+          probPadding = this._probabilityMap[i];
+        } else if(probPadding !== 0) {
+          // in case we have empty, non-empty, empty. We want to stop at the first non-empty
+          break
+        }
+      }
+
+      let seed = probPadding + Math.random() * (1 - probPadding);
       let levelToPop = 0;
+
+      // check the level corresponding to the seed
       for(let i=0; i<this._qs.length; i++){
         if(seed < this._probabilityMap[i]) {
           levelToPop = i;
@@ -242,17 +258,10 @@
         }
       }
 
+      // if the seeded level is empty,
+      // we pop the one of higher priority that is non-empty
       if(this._qs[levelToPop].isEmpty()) {
-
-        // going to higher priorities
         for(let i=levelToPop; i==0; i--) {
-          if(!this._qs[i].isEmpty()) {
-            return this._qs[i].pop()
-          }
-        }
-
-        // going to lower priorities
-        for(let i=levelToPop; i<this._qs.length; i++) {
           if(!this._qs[i].isEmpty()) {
             return this._qs[i].pop()
           }
