@@ -473,10 +473,6 @@
      * @param {boolean} true if added, false if not (because already in with a higher priority)
      */
     add(str, priority) {
-      if(str === 'http://127.0.0.1:8080/allen_10um_8bit/10um/1216-1280_256-320_512-576'){
-        console.log('>>>>>>>');
-      }
-
       if(this._pq.add(str, priority)){
         this.emit('added', [str, priority]);
         this._tryNext();
