@@ -138,7 +138,7 @@ class PriorityQueue {
       }
     }
 
-    console.log(this._probabilityMap);
+    // console.log(this._probabilityMap)
   }
 
   /**
