@@ -82,7 +82,7 @@ class PriorityQueue {
       return false
     }
 
-    if(existingPriority) {
+    if(existingPriority >= 0) {
       this.remove(str)
     }
 
@@ -215,6 +215,20 @@ class PriorityQueue {
     for(let i=0; i<this._qs.length; i++) {
       this._qs[i].reset()
     }
+  }
+
+
+  /**
+   * Get a string status about the queue length per level
+   * @return {string}
+   */
+  getStatus() {
+    let status = ''
+    for(let i=0; i<this._qs.length; i++) {
+      status += `level ${i} >> ${this._qs[i].size()} elements\n`
+    }
+
+    return status
   }
 
 }

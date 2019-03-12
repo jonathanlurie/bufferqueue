@@ -36,7 +36,7 @@ class EventManager {
         events[i](...args)
       }
     } else {
-      console.warn(`No function associated to the event ${eventName}`)
+      //console.warn(`No function associated to the event ${eventName}`)
     }
   }
 }

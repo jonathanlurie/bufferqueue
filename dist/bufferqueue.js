@@ -199,7 +199,7 @@
         return false
       }
 
-      if(existingPriority) {
+      if(existingPriority >= 0) {
         this.remove(str);
       }
 
@@ -334,6 +334,20 @@
       }
     }
 
+
+    /**
+     * Get a string status about the queue length per level
+     * @return {string}
+     */
+    getStatus() {
+      let status = '';
+      for(let i=0; i<this._qs.length; i++) {
+        status += `level ${i} >> ${this._qs[i].size()} elements\n`;
+      }
+
+      return status
+    }
+
   }
 
   /**
@@ -373,8 +387,6 @@
         for (let i = 0; i < events.length; i += 1) {
           events[i](...args);
         }
-      } else {
-        console.warn(`No function associated to the event ${eventName}`);
       }
     }
   }
@@ -418,6 +430,11 @@
       this._pq = new PriorityQueue(getOption(options, 'priorityLevels', 3));
       this._httpSettings = getOption(options, 'httpSettings', {});
       this._dlControllers = {}; // keeps the 'signal' and tracks which files are currently being downloaded
+
+      let that = this;
+      setInterval(function(){
+        that._tryNext();
+      }, 200);
     }
 
 
@@ -456,6 +473,10 @@
      * @param {boolean} true if added, false if not (because already in with a higher priority)
      */
     add(str, priority) {
+      if(str === 'http://127.0.0.1:8080/allen_10um_8bit/10um/1216-1280_256-320_512-576'){
+        console.log('>>>>>>>');
+      }
+
       if(this._pq.add(str, priority)){
         this.emit('added', [str, priority]);
         this._tryNext();
@@ -537,15 +558,6 @@
     }
 
 
-    /**
-     *
-     *
-     */
-    // start() {
-    //   this._tryNext()
-    // }
-
-
     _tryNext() {
       let nbCurrentDl = Object.keys(this._dlControllers).length;
       if(nbCurrentDl >= this._concurentDownloads)
@@ -586,10 +598,11 @@
         let fileReader = new FileReader();
         fileReader.onload = function(event) {
           let buf = event.target.result;
-          that._tryNext();
+          //that._tryNext()
           that.emit('success', [str, buf]);
         };
         fileReader.readAsArrayBuffer(myBlob);
+        that._tryNext();
       }).catch(function(err) {
         delete that._dlControllers[str];
         that._tryNext();
@@ -602,6 +615,15 @@
       });
     }
 
+
+    /**
+     * Get a string status of the prioirty queue size per level and the number of
+     * files currently being downloaded.
+     * @return {string}
+     */
+    getStatus() {
+      return `${this._pq.getStatus()}Current downloads: ${Object.keys(this._dlControllers).length}`
+    }
 
 
   }

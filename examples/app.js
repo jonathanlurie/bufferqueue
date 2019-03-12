@@ -53,29 +53,32 @@ bq.on('success', function(url, buf){
   updateChart()
 })
 
-let serverPath = 'http://127.0.0.1:8081/allen_10um_8bit/10um/'
+let serverPath = 'http://127.0.0.1:8080/allen_10um_8bit/10um/'
 let wholeFileList = path10um.map(f => `${serverPath}${f}`)
 
 
-let nbFilesQueried = 0
-let maxNumberOfFiles = 4000
+// let nbFilesQueried = 0
+// let maxNumberOfFiles = 2000
+//
+// let interv = setInterval(function (){
+//   let nbFiles = ~~(Math.random() * 10) + 1
+//   let priority = ~~(Math.random() * queueSetting.priorityLevels)
+//
+//   for(let i=0; i<nbFiles; i++){
+//     bq.add(wholeFileList[nbFilesQueried], priority)
+//     nbFilesQueried ++
+//
+//     if(nbFilesQueried > maxNumberOfFiles) {
+//       clearInterval(interv)
+//     }
+//   }
+//
+// }, 5)
 
-let interv = setInterval(function (){
-  let nbFiles = ~~(Math.random() * 10) + 1
-  let priority = ~~(Math.random() * queueSetting.priorityLevels)
-
-  for(let i=0; i<nbFiles; i++){
-    bq.add(wholeFileList[nbFilesQueried], priority)
-    nbFilesQueried ++
-
-    if(nbFilesQueried > maxNumberOfFiles) {
-      clearInterval(interv)
-    }
-  }
-
-}, 1)
-
-// bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
+bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
+bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
+bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
+bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
 // bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/896-960_384-448_768-832', 1)
 // bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/576-640_576-640_256-320', 0)
 
