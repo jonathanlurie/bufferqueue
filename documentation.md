@@ -2,48 +2,507 @@
 
 ### Table of Contents
 
--   [Foo][1]
+-   [BufferQueue][1]
     -   [Parameters][2]
-    -   [setAnAttribute][3]
+    -   [getPriority][3]
         -   [Parameters][4]
-    -   [printAnAttribute][5]
-    -   [getAnAttribute][6]
+    -   [has][5]
+        -   [Parameters][6]
+    -   [add][7]
+        -   [Parameters][8]
+    -   [isEmpty][9]
+    -   [size][10]
+        -   [Parameters][11]
+    -   [sizePerPriority][12]
+    -   [remove][13]
+        -   [Parameters][14]
+    -   [reset][15]
+    -   [abort][16]
+        -   [Parameters][17]
+    -   [abortAll][18]
+    -   [getStatus][19]
+-   [EventManager][20]
+    -   [on][21]
+        -   [Parameters][22]
+    -   [emit][23]
+        -   [Parameters][24]
+-   [PriorityQueue][25]
+    -   [Parameters][26]
+    -   [getPriority][27]
+        -   [Parameters][28]
+    -   [has][29]
+        -   [Parameters][30]
+    -   [add][31]
+        -   [Parameters][32]
+    -   [pop_ORIG][33]
+    -   [pop][34]
+    -   [isEmpty][35]
+    -   [size][36]
+        -   [Parameters][37]
+    -   [sizePerPriority][38]
+    -   [remove][39]
+        -   [Parameters][40]
+    -   [reset][41]
+    -   [getStatus][42]
+-   [Queue][43]
+    -   [add][44]
+        -   [Parameters][45]
+    -   [has][46]
+        -   [Parameters][47]
+    -   [pop][48]
+    -   [isEmpty][49]
+    -   [size][50]
+        -   [Parameters][51]
+    -   [first][52]
+    -   [last][53]
+    -   [remove][54]
+        -   [Parameters][55]
+    -   [reset][56]
 
-## Foo
+## BufferQueue
 
-This class is for Foo
+**Extends EventManager**
+
+This is the main object of the BufferQueue library.
+
+Emitted events:
+
+-   'added': when a new element to download is added to the queue
+-   'removed': when an element is removed (and will not be downloaded)
+-   'reseted': when the whole queue is reseted
+-   'downloading': when a file is starting to be downloading (after being popped from the queue)
+-   'failed': when a file could not be downloaded properly (status above 2xx)
+-   'aborted': when a file download is aborted by an explicit abort() call
+-   'success': when a file has been successfully downloaded and converted into an ArrayBuffer. Callback arguments are URL, ArrayBuffer, downloadTimeMs
 
 ### Parameters
 
--   `anAttribute` **[number][7]** a value.
--   `aSecondAttribute` **[number][7]** another value. (optional, default `10`)
+-   `options` **[Object][57]** the option object
 
-### setAnAttribute
+### getPriority
 
-Set anAttribute.
+Get the level of priority of a given file
 
 #### Parameters
 
--   `a` **[number][7]** the value to give to anAttribute.
+-   `str` **[string][58]** URL of the file to check
 
-### printAnAttribute
+Returns **[number][59]** zero is the highest priority, -1 means the element is NOT
+in the queue
 
-Display anAttribute.
+### has
 
-### getAnAttribute
+Checks if a string is in the queue. Optionally, we can verify a specific
+level only.
 
-Returns **[number][7]** The anAttribute value.
+#### Parameters
 
-[1]: #foo
+-   `str` **[string][58]** string to verify the presence in the queue
+-   `priority` **[number][59]** OPTIONAL the priority (must be in [0, level-1]) (optional, default `-1`)
+
+Returns **[boolean][60]** 
+
+### add
+
+Add a string to the queue with a given priority.
+If the string is already present in the queue with the same level of priority or higher, then nothing is done.
+If the string is already present but with a different level of priority, then
+it is removed and added with the provided level or priority.
+
+Emits the event 'added' with the str as argument if properly added.
+
+#### Parameters
+
+-   `str` **[string][58]** the string to add
+-   `priority` **[number][59]** the priority (must be in [0, level-1])
+-   `true` **[boolean][60]** if added, false if not (because already in with a higher priority)
+
+### isEmpty
+
+Check if the priority queue is empty (= if all the per-level-queues are all empty)
+
+Returns **[boolean][60]** true if empty, false if not empty
+
+### size
+
+Get the total number of elements in the priority queue, or optionnaly, for a specific
+level of priority
+
+#### Parameters
+
+-   `priority` **[number][59]** OPTIONAL level of priority
+-   `number` **[number][59]** of elements
+
+### sizePerPriority
+
+Get the size of the queue for each priority level
+
+Returns **[array][61]** 
+
+### remove
+
+Note: this should be used as rarely as possible since it does not respect the logic
+of a queue.
+Remove an element. If null is returned, this means the element was not in the queue.
+
+Emits the event 'removed' if the str as argument if properly removed
+
+#### Parameters
+
+-   `str`  
+-   `null-null` **[string][58]** str, the element to remove
+
+Returns **([string][58] | null)** the element that was jsut removed
+
+### reset
+
+Reset the whole priority queue, empty it all. No value returned.
+
+Emits the event 'reseted' without any argument
+
+### abort
+
+Abort the download of a specific file. If the file was actually being downloaded,
+the `aborted` event will be emitted.
+Note: once a file is aborted, it is no longer in a queue.
+
+#### Parameters
+
+-   `str` **[string][58]** the URL of the file to abort
+
+### abortAll
+
+Abort all the current downloads. `aborted` event will be emitted.
+
+### getStatus
+
+Get a string status of the prioirty queue size per level and the number of
+files currently being downloaded.
+
+Returns **[string][58]** 
+
+## EventManager
+
+The EventManager deals with events, create them, call them.
+This class is mostly for being inherited from.
+
+### on
+
+Define an event, with a name associated with a function
+
+#### Parameters
+
+-   `eventName` **[String][58]** Name to give to the event
+-   `callback` **[Function][62]** function associated to the even
+
+### emit
+
+Emit the event(s). If multiple callbacks are tied to this event,
+they will be called in the order they were declared.
+
+#### Parameters
+
+-   `eventName` **[string][58]** name of the event to fire.
+-   `args` **[array][61]** argument to call the callback with.
+    Note that within the callback, those arguments will be "flattened" and not as an array. (optional, default `[]`)
+
+## PriorityQueue
+
+This priority queue works with levels of priority, 0 beeing the highest priority
+and following level will be of decreasing priority.
+In term of implementation, PriorityQueue instanciates N Queues, where N is the
+number of priority levels. The number of priority levels has to be given at
+the creation of a PriorityQueue instance.
+
+### Parameters
+
+-   `levels`   (optional, default `3`)
+
+### getPriority
+
+Get the level of priority of a given string
+
+#### Parameters
+
+-   `str`  
+
+Returns **[number][59]** zero is the highest priority, -1 means the element is NOT
+in the queue
+
+### has
+
+Checks if a string is in the queue. Optionally, we can verify a specific
+level only.
+
+#### Parameters
+
+-   `str` **[string][58]** string to verify the presence in the queue
+-   `priority` **[number][59]** OPTIONAL the priority (must be in [0, level-1]) (optional, default `-1`)
+
+Returns **[boolean][60]** 
+
+### add
+
+Add a string to the queue with a given priority.
+If the string is already present in the queue with the same level of priority or higher, then nothing is done.
+If the string is already present but with a different level of priority, then
+it is removed and added with the provided level or priority.
+
+#### Parameters
+
+-   `str` **[string][58]** the string to add
+-   `priority` **[number][59]** the priority (must be in [0, level-1])
+-   `true` **[boolean][60]** if added, false if not (because already in with a higher priority)
+
+### pop_ORIG
+
+Get the the element with the highest priority and remove it from the queue
+
+Returns **([string][58] | null)** can return null if the queue is empty
+
+### pop
+
+This version of pop relies on the probability map to make sure that some lower
+priorities items are getting popped every now and then, even if there are still
+elements in higher priority queues
+
+### isEmpty
+
+Check if the priority queue is empty (= if all the per-level-queues are all empty)
+
+Returns **[boolean][60]** true if empty, false if not empty
+
+### size
+
+Get the total number of elements in the priority queue, or optionnaly, for a specific
+level of priority
+
+#### Parameters
+
+-   `priority` **[number][59]** OPTIONAL level of priority (optional, default `-1`)
+-   `number` **[number][59]** of elements
+
+### sizePerPriority
+
+Get the size of the queue for each priority level
+
+Returns **[array][61]** 
+
+### remove
+
+Note: this should be used as rarely as possible since it does not respect the logic
+of a queue.
+Remove an element. If null is returned, this means the element was not in the queue.
+
+#### Parameters
+
+-   `str`  
+-   `null-null` **[string][58]** str, the element to remove
+
+Returns **([string][58] | null)** the element that was jsut removed
+
+### reset
+
+Reset the whole priority queue, empty it all. No value returned.
+
+### getStatus
+
+Get a string status about the queue length per level
+
+Returns **[string][58]** 
+
+## Queue
+
+A queue to add and pop string. It also provides an arbitrary remove function.
+A queue is first-in-first-out.
+Elements in this queue must be strings
+
+### add
+
+Add a string at the end of the queue. Not added again if already in there.
+
+#### Parameters
+
+-   `str` **[string][58]** some string to add
+
+### has
+
+Check if this queue contains a given string
+
+#### Parameters
+
+-   `str`  
+
+Returns **[boolean][60]** true if this queue has a given string, false if not
+
+### pop
+
+Extract the first element
+
+Returns **[string][58]** the first element
+
+### isEmpty
+
+Is the queue empty?
+
+Returns **[boolean][60]** true if empty, false if not
+
+### size
+
+Get the number of element in the queue
+
+#### Parameters
+
+-   `number`  
+
+### first
+
+Get the first element of the queue without removing it
+(Not sure how useful is that)
+
+Returns **[string][58]** 
+
+### last
+
+Get the last element of the queue without removing it
+(Not sure how useful is that)
+
+Returns **[string][58]** 
+
+### remove
+
+Remove an element from the queue and returns it
+
+#### Parameters
+
+-   `str` **[string][58]** an element to remove
+
+Returns **([string][58] | null)** 
+
+### reset
+
+Remove all the elements of the queue
+
+[1]: #bufferqueue
 
 [2]: #parameters
 
-[3]: #setanattribute
+[3]: #getpriority
 
 [4]: #parameters-1
 
-[5]: #printanattribute
+[5]: #has
 
-[6]: #getanattribute
+[6]: #parameters-2
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[7]: #add
+
+[8]: #parameters-3
+
+[9]: #isempty
+
+[10]: #size
+
+[11]: #parameters-4
+
+[12]: #sizeperpriority
+
+[13]: #remove
+
+[14]: #parameters-5
+
+[15]: #reset
+
+[16]: #abort
+
+[17]: #parameters-6
+
+[18]: #abortall
+
+[19]: #getstatus
+
+[20]: #eventmanager
+
+[21]: #on
+
+[22]: #parameters-7
+
+[23]: #emit
+
+[24]: #parameters-8
+
+[25]: #priorityqueue
+
+[26]: #parameters-9
+
+[27]: #getpriority-1
+
+[28]: #parameters-10
+
+[29]: #has-1
+
+[30]: #parameters-11
+
+[31]: #add-1
+
+[32]: #parameters-12
+
+[33]: #pop_orig
+
+[34]: #pop
+
+[35]: #isempty-1
+
+[36]: #size-1
+
+[37]: #parameters-13
+
+[38]: #sizeperpriority-1
+
+[39]: #remove-1
+
+[40]: #parameters-14
+
+[41]: #reset-1
+
+[42]: #getstatus-1
+
+[43]: #queue
+
+[44]: #add-2
+
+[45]: #parameters-15
+
+[46]: #has-2
+
+[47]: #parameters-16
+
+[48]: #pop-1
+
+[49]: #isempty-2
+
+[50]: #size-2
+
+[51]: #parameters-17
+
+[52]: #first
+
+[53]: #last
+
+[54]: #remove-2
+
+[55]: #parameters-18
+
+[56]: #reset-2
+
+[57]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[58]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[59]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[60]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[61]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[62]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

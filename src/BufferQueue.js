@@ -4,7 +4,7 @@ import { getOption } from './Tools'
 
 
 /**
- *
+ * This is the main object of the BufferQueue library.
  *
  * Emitted events:
  * - 'added': when a new element to download is added to the queue
@@ -13,7 +13,7 @@ import { getOption } from './Tools'
  * - 'downloading': when a file is starting to be downloading (after being popped from the queue)
  * - 'failed': when a file could not be downloaded properly (status above 2xx)
  * - 'aborted': when a file download is aborted by an explicit abort() call
- * - 'success': when a file has been successfully downloaded and converted into an ArrayBuffer
+ * - 'success': when a file has been successfully downloaded and converted into an ArrayBuffer. Callback arguments are URL, ArrayBuffer, downloadTimeMs
  *
  */
 class BufferQueue extends EventManager {
@@ -39,7 +39,8 @@ class BufferQueue extends EventManager {
 
 
   /**
-   * Get the level of priority of a given string
+   * Get the level of priority of a given file
+   * @param {string} str - URL of the file to check
    * @return {number} zero is the highest priority, -1 means the element is NOT
    * in the queue
    */
@@ -138,14 +139,22 @@ class BufferQueue extends EventManager {
   }
 
 
+  /**
+   * Abort the download of a specific file. If the file was actually being downloaded,
+   * the `aborted` event will be emitted.
+   * Note: once a file is aborted, it is no longer in a queue.
+   * @param {string} str - the URL of the file to abort
+   */
   abort(str) {
-    // TODO
     if(str in this._dlControllers) {
       this._dlControllers[str].abort()
     }
   }
 
 
+  /**
+   * Abort all the current downloads. `aborted` event will be emitted.
+   */
   abortAll() {
     let k = Object.keys(this._dlControllers)
     for(let i=0; i<k.length; i++) {
@@ -154,6 +163,9 @@ class BufferQueue extends EventManager {
   }
 
 
+  /**
+   * @private
+   */
   _tryNext() {
     let nbCurrentDl = Object.keys(this._dlControllers).length
     if(nbCurrentDl >= this._concurentDownloads)
@@ -167,6 +179,9 @@ class BufferQueue extends EventManager {
   }
 
 
+  /**
+   * @private
+   */
   _startDownload(str){
     let that = this
 
@@ -179,11 +194,17 @@ class BufferQueue extends EventManager {
 
     this.emit('downloading', [str])
 
+    let t0 = performance.now()
+    let t1 = t0
+
     fetch(myRequest/*, { signal }*/).then(response => {
       if(!response.ok){
         that.emit('failed', [url, response])
         return null
       }
+      t1 = performance.now()
+
+
       return response.blob()
     }).then(myBlob => {
       delete that._dlControllers[str]
@@ -195,7 +216,7 @@ class BufferQueue extends EventManager {
       fileReader.onload = function(event) {
         let buf = event.target.result
         //that._tryNext()
-        that.emit('success', [str, buf])
+        that.emit('success', [str, buf, (t1 - t0)])
       }
       fileReader.readAsArrayBuffer(myBlob)
       that._tryNext()

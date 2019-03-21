@@ -48,8 +48,9 @@ bq.on('aborted', function(url){
   updateChart()
 })
 
-bq.on('success', function(url, buf){
-  print(`File ${url} is properly downloaded (size: ${buf.byteLength} bytes)`, 'success')
+bq.on('success', function(url, buf, time){
+  let bitrate = (buf.byteLength/2**10) / (time/1000)
+  print(`File ${url} is properly downloaded. size: ${buf.byteLength} bytes in ${~~time} ms (${~~bitrate}kb/s)`, 'success')
   updateChart()
 })
 
@@ -75,12 +76,12 @@ let wholeFileList = path10um.map(f => `${serverPath}${f}`)
 //
 // }, 5)
 
-bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
-bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
-bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
-bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
-// bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/896-960_384-448_768-832', 1)
-// bq.add('http://127.0.0.1:8081/allen_10um_8bit//10um/576-640_576-640_256-320', 0)
+bq.add('http://127.0.0.1:8080/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
+bq.add('http://127.0.0.1:8080/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
+bq.add('http://127.0.0.1:8080/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
+bq.add('http://127.0.0.1:8080/allen_10um_8bit//10um/320-384_384-448_704-768', 0)
+// bq.add('http://127.0.0.1:8080/allen_10um_8bit//10um/896-960_384-448_768-832', 1)
+// bq.add('http://127.0.0.1:8080/allen_10um_8bit//10um/576-640_576-640_256-320', 0)
 
 
 function updateChart() {
@@ -92,6 +93,6 @@ function updateChart() {
 }
 
 function print(str, type = 'info') {
-  //let d = new Date()
-  //printer.innerHTML += `<span class="message ${type}">[${d.toISOString()}] ${str} <span><br>`
+  let d = new Date()
+  printer.innerHTML += `<span class="message ${type}">[${d.toISOString()}] ${str} <span><br>`
 }

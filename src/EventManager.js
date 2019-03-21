@@ -28,6 +28,13 @@ class EventManager {
   }
 
 
+  /**
+   * Emit the event(s). If multiple callbacks are tied to this event,
+   * they will be called in the order they were declared.
+   * @param {string} eventName - name of the event to fire.
+   * @param {array} args - argument to call the callback with.
+   * Note that within the callback, those arguments will be "flattened" and not as an array.
+   */
   emit(eventName, args = []) {
     // the event must exist and be non null
     if ((eventName in this._events) && (this._events[eventName].length > 0)) {

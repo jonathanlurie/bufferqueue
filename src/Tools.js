@@ -1,4 +1,5 @@
 /**
+ * @private
  * Handy function to deal with option object we pass in argument of function.
  * Allows the return of a default value if the `optionName` is not available in
  * the `optionObj`
