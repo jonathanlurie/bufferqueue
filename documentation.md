@@ -21,43 +21,46 @@
         -   [Parameters][17]
     -   [abortAll][18]
     -   [getStatus][19]
--   [EventManager][20]
-    -   [on][21]
-        -   [Parameters][22]
-    -   [emit][23]
-        -   [Parameters][24]
--   [PriorityQueue][25]
-    -   [Parameters][26]
-    -   [getPriority][27]
-        -   [Parameters][28]
-    -   [has][29]
-        -   [Parameters][30]
-    -   [add][31]
-        -   [Parameters][32]
-    -   [pop_ORIG][33]
-    -   [pop][34]
-    -   [isEmpty][35]
-    -   [size][36]
-        -   [Parameters][37]
-    -   [sizePerPriority][38]
-    -   [remove][39]
-        -   [Parameters][40]
-    -   [reset][41]
-    -   [getStatus][42]
--   [Queue][43]
-    -   [add][44]
-        -   [Parameters][45]
-    -   [has][46]
+    -   [sortWithinLevel][20]
+-   [EventManager][21]
+    -   [on][22]
+        -   [Parameters][23]
+    -   [emit][24]
+        -   [Parameters][25]
+-   [PriorityQueue][26]
+    -   [Parameters][27]
+    -   [getPriority][28]
+        -   [Parameters][29]
+    -   [has][30]
+        -   [Parameters][31]
+    -   [add][32]
+        -   [Parameters][33]
+    -   [pop_ORIG][34]
+    -   [pop][35]
+    -   [isEmpty][36]
+    -   [size][37]
+        -   [Parameters][38]
+    -   [sizePerPriority][39]
+    -   [remove][40]
+        -   [Parameters][41]
+    -   [reset][42]
+    -   [getStatus][43]
+    -   [sortWithinLevel][44]
+-   [Queue][45]
+    -   [add][46]
         -   [Parameters][47]
-    -   [pop][48]
-    -   [isEmpty][49]
-    -   [size][50]
-        -   [Parameters][51]
-    -   [first][52]
-    -   [last][53]
-    -   [remove][54]
-        -   [Parameters][55]
-    -   [reset][56]
+    -   [has][48]
+        -   [Parameters][49]
+    -   [pop][50]
+    -   [isEmpty][51]
+    -   [size][52]
+        -   [Parameters][53]
+    -   [first][54]
+    -   [last][55]
+    -   [remove][56]
+        -   [Parameters][57]
+    -   [reset][58]
+    -   [sortByPriorityScore][59]
 
 ## BufferQueue
 
@@ -77,7 +80,7 @@ Emitted events:
 
 ### Parameters
 
--   `options` **[Object][57]** the option object
+-   `options` **[Object][60]** the option object
 
 ### getPriority
 
@@ -85,9 +88,9 @@ Get the level of priority of a given file
 
 #### Parameters
 
--   `str` **[string][58]** URL of the file to check
+-   `str` **[string][61]** URL of the file to check
 
-Returns **[number][59]** zero is the highest priority, -1 means the element is NOT
+Returns **[number][62]** zero is the highest priority, -1 means the element is NOT
 in the queue
 
 ### has
@@ -97,10 +100,10 @@ level only.
 
 #### Parameters
 
--   `str` **[string][58]** string to verify the presence in the queue
--   `priority` **[number][59]** OPTIONAL the priority (must be in [0, level-1]) (optional, default `-1`)
+-   `str` **[string][61]** string to verify the presence in the queue
+-   `priority` **[number][62]** OPTIONAL the priority (must be in [0, level-1]) (optional, default `-1`)
 
-Returns **[boolean][60]** 
+Returns **[boolean][63]** 
 
 ### add
 
@@ -113,15 +116,16 @@ Emits the event 'added' with the str as argument if properly added.
 
 #### Parameters
 
--   `str` **[string][58]** the string to add
--   `priority` **[number][59]** the priority (must be in [0, level-1])
--   `true` **[boolean][60]** if added, false if not (because already in with a higher priority)
+-   `str` **[string][61]** the string to add
+-   `priority` **[number][62]** the priority (must be in [0, level-1])
+-   `priorityScore`   (optional, default `Infinity`)
+-   `true` **[boolean][63]** if added, false if not (because already in with a higher priority)
 
 ### isEmpty
 
 Check if the priority queue is empty (= if all the per-level-queues are all empty)
 
-Returns **[boolean][60]** true if empty, false if not empty
+Returns **[boolean][63]** true if empty, false if not empty
 
 ### size
 
@@ -130,14 +134,14 @@ level of priority
 
 #### Parameters
 
--   `priority` **[number][59]** OPTIONAL level of priority
--   `number` **[number][59]** of elements
+-   `priority` **[number][62]** OPTIONAL level of priority
+-   `number` **[number][62]** of elements
 
 ### sizePerPriority
 
 Get the size of the queue for each priority level
 
-Returns **[array][61]** 
+Returns **[array][64]** 
 
 ### remove
 
@@ -150,9 +154,9 @@ Emits the event 'removed' if the str as argument if properly removed
 #### Parameters
 
 -   `str`  
--   `null-null` **[string][58]** str, the element to remove
+-   `null-null` **[string][61]** str, the element to remove
 
-Returns **([string][58] | null)** the element that was jsut removed
+Returns **([string][61] | null)** the element that was jsut removed
 
 ### reset
 
@@ -168,7 +172,7 @@ Note: once a file is aborted, it is no longer in a queue.
 
 #### Parameters
 
--   `str` **[string][58]** the URL of the file to abort
+-   `str` **[string][61]** the URL of the file to abort
 
 ### abortAll
 
@@ -179,7 +183,11 @@ Abort all the current downloads. `aborted` event will be emitted.
 Get a string status of the prioirty queue size per level and the number of
 files currently being downloaded.
 
-Returns **[string][58]** 
+Returns **[string][61]** 
+
+### sortWithinLevel
+
+If priority scores are given, elements can be sorted based on that.
 
 ## EventManager
 
@@ -192,8 +200,8 @@ Define an event, with a name associated with a function
 
 #### Parameters
 
--   `eventName` **[String][58]** Name to give to the event
--   `callback` **[Function][62]** function associated to the even
+-   `eventName` **[String][61]** Name to give to the event
+-   `callback` **[Function][65]** function associated to the even
 
 ### emit
 
@@ -202,8 +210,8 @@ they will be called in the order they were declared.
 
 #### Parameters
 
--   `eventName` **[string][58]** name of the event to fire.
--   `args` **[array][61]** argument to call the callback with.
+-   `eventName` **[string][61]** name of the event to fire.
+-   `args` **[array][64]** argument to call the callback with.
     Note that within the callback, those arguments will be "flattened" and not as an array. (optional, default `[]`)
 
 ## PriorityQueue
@@ -226,7 +234,7 @@ Get the level of priority of a given string
 
 -   `str`  
 
-Returns **[number][59]** zero is the highest priority, -1 means the element is NOT
+Returns **[number][62]** zero is the highest priority, -1 means the element is NOT
 in the queue
 
 ### has
@@ -236,10 +244,10 @@ level only.
 
 #### Parameters
 
--   `str` **[string][58]** string to verify the presence in the queue
--   `priority` **[number][59]** OPTIONAL the priority (must be in [0, level-1]) (optional, default `-1`)
+-   `str` **[string][61]** string to verify the presence in the queue
+-   `priority` **[number][62]** OPTIONAL the priority (must be in [0, level-1]) (optional, default `-1`)
 
-Returns **[boolean][60]** 
+Returns **[boolean][63]** 
 
 ### add
 
@@ -250,15 +258,16 @@ it is removed and added with the provided level or priority.
 
 #### Parameters
 
--   `str` **[string][58]** the string to add
--   `priority` **[number][59]** the priority (must be in [0, level-1])
--   `true` **[boolean][60]** if added, false if not (because already in with a higher priority)
+-   `str` **[string][61]** the string to add
+-   `priority` **[number][62]** the priority (must be in [0, level-1])
+-   `priorityScore`   (optional, default `Infinity`)
+-   `true` **[boolean][63]** if added, false if not (because already in with a higher priority)
 
 ### pop_ORIG
 
 Get the the element with the highest priority and remove it from the queue
 
-Returns **([string][58] | null)** can return null if the queue is empty
+Returns **([string][61] | null)** can return null if the queue is empty
 
 ### pop
 
@@ -270,7 +279,7 @@ elements in higher priority queues
 
 Check if the priority queue is empty (= if all the per-level-queues are all empty)
 
-Returns **[boolean][60]** true if empty, false if not empty
+Returns **[boolean][63]** true if empty, false if not empty
 
 ### size
 
@@ -279,14 +288,14 @@ level of priority
 
 #### Parameters
 
--   `priority` **[number][59]** OPTIONAL level of priority (optional, default `-1`)
--   `number` **[number][59]** of elements
+-   `priority` **[number][62]** OPTIONAL level of priority (optional, default `-1`)
+-   `number` **[number][62]** of elements
 
 ### sizePerPriority
 
 Get the size of the queue for each priority level
 
-Returns **[array][61]** 
+Returns **[array][64]** 
 
 ### remove
 
@@ -297,9 +306,9 @@ Remove an element. If null is returned, this means the element was not in the qu
 #### Parameters
 
 -   `str`  
--   `null-null` **[string][58]** str, the element to remove
+-   `null-null` **[string][61]** str, the element to remove
 
-Returns **([string][58] | null)** the element that was jsut removed
+Returns **([string][61] | null)** the element that was jsut removed
 
 ### reset
 
@@ -309,7 +318,12 @@ Reset the whole priority queue, empty it all. No value returned.
 
 Get a string status about the queue length per level
 
-Returns **[string][58]** 
+Returns **[string][61]** 
+
+### sortWithinLevel
+
+If a priotrity score is given to the elements, then each level of priority can
+have their element sorted within.
 
 ## Queue
 
@@ -323,7 +337,8 @@ Add a string at the end of the queue. Not added again if already in there.
 
 #### Parameters
 
--   `str` **[string][58]** some string to add
+-   `str` **[string][61]** some string to add
+-   `priorityScore`   (optional, default `Infinity`)
 
 ### has
 
@@ -333,19 +348,19 @@ Check if this queue contains a given string
 
 -   `str`  
 
-Returns **[boolean][60]** true if this queue has a given string, false if not
+Returns **[boolean][63]** true if this queue has a given string, false if not
 
 ### pop
 
 Extract the first element
 
-Returns **[string][58]** the first element
+Returns **[string][61]** the first element
 
 ### isEmpty
 
 Is the queue empty?
 
-Returns **[boolean][60]** true if empty, false if not
+Returns **[boolean][63]** true if empty, false if not
 
 ### size
 
@@ -360,14 +375,14 @@ Get the number of element in the queue
 Get the first element of the queue without removing it
 (Not sure how useful is that)
 
-Returns **[string][58]** 
+Returns **[string][61]** 
 
 ### last
 
 Get the last element of the queue without removing it
 (Not sure how useful is that)
 
-Returns **[string][58]** 
+Returns **[string][61]** 
 
 ### remove
 
@@ -375,13 +390,17 @@ Remove an element from the queue and returns it
 
 #### Parameters
 
--   `str` **[string][58]** an element to remove
+-   `str` **[string][61]** an element to remove
 
-Returns **([string][58] | null)** 
+Returns **([string][61] | null)** 
 
 ### reset
 
 Remove all the elements of the queue
+
+### sortByPriorityScore
+
+If a priority score is given to the elements, then we can sort the queue based on that
 
 [1]: #bufferqueue
 
@@ -421,88 +440,94 @@ Remove all the elements of the queue
 
 [19]: #getstatus
 
-[20]: #eventmanager
+[20]: #sortwithinlevel
 
-[21]: #on
+[21]: #eventmanager
 
-[22]: #parameters-7
+[22]: #on
 
-[23]: #emit
+[23]: #parameters-7
 
-[24]: #parameters-8
+[24]: #emit
 
-[25]: #priorityqueue
+[25]: #parameters-8
 
-[26]: #parameters-9
+[26]: #priorityqueue
 
-[27]: #getpriority-1
+[27]: #parameters-9
 
-[28]: #parameters-10
+[28]: #getpriority-1
 
-[29]: #has-1
+[29]: #parameters-10
 
-[30]: #parameters-11
+[30]: #has-1
 
-[31]: #add-1
+[31]: #parameters-11
 
-[32]: #parameters-12
+[32]: #add-1
 
-[33]: #pop_orig
+[33]: #parameters-12
 
-[34]: #pop
+[34]: #pop_orig
 
-[35]: #isempty-1
+[35]: #pop
 
-[36]: #size-1
+[36]: #isempty-1
 
-[37]: #parameters-13
+[37]: #size-1
 
-[38]: #sizeperpriority-1
+[38]: #parameters-13
 
-[39]: #remove-1
+[39]: #sizeperpriority-1
 
-[40]: #parameters-14
+[40]: #remove-1
 
-[41]: #reset-1
+[41]: #parameters-14
 
-[42]: #getstatus-1
+[42]: #reset-1
 
-[43]: #queue
+[43]: #getstatus-1
 
-[44]: #add-2
+[44]: #sortwithinlevel-1
 
-[45]: #parameters-15
+[45]: #queue
 
-[46]: #has-2
+[46]: #add-2
 
-[47]: #parameters-16
+[47]: #parameters-15
 
-[48]: #pop-1
+[48]: #has-2
 
-[49]: #isempty-2
+[49]: #parameters-16
 
-[50]: #size-2
+[50]: #pop-1
 
-[51]: #parameters-17
+[51]: #isempty-2
 
-[52]: #first
+[52]: #size-2
 
-[53]: #last
+[53]: #parameters-17
 
-[54]: #remove-2
+[54]: #first
 
-[55]: #parameters-18
+[55]: #last
 
-[56]: #reset-2
+[56]: #remove-2
 
-[57]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[57]: #parameters-18
 
-[58]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[58]: #reset-2
 
-[59]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[59]: #sortbypriorityscore
 
-[60]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[60]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[61]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[61]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[62]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[62]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[63]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[64]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[65]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

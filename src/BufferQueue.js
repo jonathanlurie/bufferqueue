@@ -73,8 +73,8 @@ class BufferQueue extends EventManager {
    * @param {number} priority - the priority (must be in [0, level-1])
    * @param {boolean} true if added, false if not (because already in with a higher priority)
    */
-  add(str, priority) {
-    if(this._pq.add(str, priority)){
+  add(str, priority, priorityScore=Infinity) {
+    if(this._pq.add(str, priority, priorityScore)){
       this.emit('added', [str, priority])
       this._tryNext()
     }
@@ -242,6 +242,13 @@ class BufferQueue extends EventManager {
     return `${this._pq.getStatus()}Current downloads: ${Object.keys(this._dlControllers).length}`
   }
 
+
+  /**
+   * If priority scores are given, elements can be sorted based on that.
+   */
+  sortWithinLevel(){
+    this._pq.sortWithinLevel()
+  }
 
 }
 

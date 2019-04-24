@@ -16,9 +16,9 @@ class Queue {
    * Add a string at the end of the queue. Not added again if already in there.
    * @param {string} str - some string to add
    */
-  add(str) {
+  add(str, priorityScore=Infinity) {
     if (!(str in this._keys)){
-      this._q.unshift(str);
+      this._q.unshift({str: str, priorityScore: priorityScore});
       this._keys[str] = 1;
     }
   }
@@ -40,7 +40,7 @@ class Queue {
   pop() {
     let str = null;
     if(this._q.length){
-      str = this._q.pop();
+      str = this._q.pop().str;
       delete this._keys[str];
     }
     return str
@@ -71,7 +71,7 @@ class Queue {
    * @return {string}
    */
   first() {
-    return this._q.length ? this._q[0] : null
+    return this._q.length ? this._q[0].str : null
   }
 
 
@@ -81,7 +81,7 @@ class Queue {
    * @return {string}
    */
   last() {
-    return this._q.length ? this._q[this._q.length - 1] : null
+    return this._q.length ? this._q[this._q.length - 1].str : null
   }
 
 
@@ -92,9 +92,17 @@ class Queue {
    */
   remove(str) {
     let strToRem = null;
-    let index = this._q.indexOf(str);
+    let index = -1;
+
+    for(let i=0; i<this._q.length; i++){
+      if(this._q[i].str === str){
+        index = i;
+        break
+      }
+    }
+
     if (index > -1) {
-      strToRem = this._q.splice(index, 1);
+      strToRem = this._q.splice(index, 1)[0].str;
       delete this._keys[strToRem];
     }
     return strToRem
@@ -107,6 +115,16 @@ class Queue {
   reset() {
     this._q = [];
     this._keys = {};
+  }
+
+
+  /**
+   * If a priority score is given to the elements, then we can sort the queue based on that
+   */
+  sortByPriorityScore(){
+    this._q.sort(function(a, b){
+      return b.priorityScore - a.priorityScore
+    });
   }
 
 }
@@ -186,7 +204,7 @@ class PriorityQueue {
    * @param {number} priority - the priority (must be in [0, level-1])
    * @param {boolean} true if added, false if not (because already in with a higher priority)
    */
-  add(str, priority) {
+  add(str, priority, priorityScore=Infinity) {
     let existingPriority = this.getPriority(str);
 
     if(existingPriority >= priority) {
@@ -197,7 +215,7 @@ class PriorityQueue {
       this.remove(str);
     }
 
-    this._qs[priority].add(str);
+    this._qs[priority].add(str, priorityScore);
     return true
   }
 
@@ -342,6 +360,17 @@ class PriorityQueue {
     return status
   }
 
+
+  /**
+   * If a priotrity score is given to the elements, then each level of priority can
+   * have their element sorted within.
+   */
+  sortWithinLevel(){
+    for(let i=0; i<this._qs.length; i++) {
+      this._qs[i].sortByPriorityScore();
+    }
+  }
+
 }
 
 /**
@@ -475,8 +504,8 @@ class BufferQueue extends EventManager {
    * @param {number} priority - the priority (must be in [0, level-1])
    * @param {boolean} true if added, false if not (because already in with a higher priority)
    */
-  add(str, priority) {
-    if(this._pq.add(str, priority)){
+  add(str, priority, priorityScore=Infinity) {
+    if(this._pq.add(str, priority, priorityScore)){
       this.emit('added', [str, priority]);
       this._tryNext();
     }
@@ -644,6 +673,13 @@ class BufferQueue extends EventManager {
     return `${this._pq.getStatus()}Current downloads: ${Object.keys(this._dlControllers).length}`
   }
 
+
+  /**
+   * If priority scores are given, elements can be sorted based on that.
+   */
+  sortWithinLevel(){
+    this._pq.sortWithinLevel();
+  }
 
 }
 

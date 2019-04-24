@@ -1,6 +1,6 @@
 {
   "name": "bufferqueue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A starting point to create ES6 module for browser",
   "repository": "jonathanlurie/bufferqueue",
   "main": "lib/bufferqueue.js",

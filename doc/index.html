@@ -104,6 +104,12 @@
                         #getStatus
                       </a></li>
                       
+                      <li><a
+                        href='#bufferqueuesortwithinlevel'
+                        class='regular pre-open'>
+                        #sortWithinLevel
+                      </a></li>
+                      
                     </ul>
                   
                   
@@ -192,6 +198,12 @@
                         #getStatus
                       </a></li>
                       
+                      <li><a
+                        href='#priorityqueuesortwithinlevel'
+                        class='regular pre-open'>
+                        #sortWithinLevel
+                      </a></li>
+                      
                     </ul>
                   
                   
@@ -266,6 +278,12 @@
                         href='#queuereset'
                         class='regular pre-open'>
                         #reset
+                      </a></li>
+                      
+                      <li><a
+                        href='#queuesortbypriorityscore'
+                        class='regular pre-open'>
+                        #sortByPriorityScore
                       </a></li>
                       
                     </ul>
@@ -554,7 +572,7 @@ level only.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>add(str, priority, true)</span>
+            <span class='code strong strong truncate'>add(str, priority, priorityScore, true)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -570,7 +588,7 @@ it is removed and added with the provided level or priority.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>add(str: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, priority: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, true: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+    <div class='pre p1 fill-light mt0'>add(str: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, priority: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, priorityScore: any, true: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
    
   
   
@@ -602,6 +620,15 @@ it is removed and added with the provided level or priority.</p>
 [0, level-1]
 )
 
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>priorityScore</span> <code class='quiet'>(any
+            = <code>Infinity</code>)</code>
+	    
           </div>
           
         </div>
@@ -1119,6 +1146,54 @@ files currently being downloaded.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='bufferqueuesortwithinlevel'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>sortWithinLevel()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>If priority scores are given, elements can be sorted based on that.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>sortWithinLevel()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
 </div>
 
   
@@ -1348,7 +1423,7 @@ level only.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>add(str, priority, true)</span>
+            <span class='code strong strong truncate'>add(str, priority, priorityScore, true)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -1363,7 +1438,7 @@ it is removed and added with the provided level or priority.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>add(str: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, priority: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, true: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+    <div class='pre p1 fill-light mt0'>add(str: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, priority: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, priorityScore: any, true: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
    
   
   
@@ -1395,6 +1470,15 @@ it is removed and added with the provided level or priority.</p>
 [0, level-1]
 )
 
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>priorityScore</span> <code class='quiet'>(any
+            = <code>Infinity</code>)</code>
+	    
           </div>
           
         </div>
@@ -1904,6 +1988,55 @@ Remove an element. If null is returned, this means the element was not in the qu
       </div>
     </div>
   
+    <div class='border-bottom' id='priorityqueuesortwithinlevel'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>sortWithinLevel()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>If a priotrity score is given to the elements, then each level of priority can
+have their element sorted within.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>sortWithinLevel()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
 </div>
 
   
@@ -1964,7 +2097,7 @@ Elements in this queue must be strings</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>add(str)</span>
+            <span class='code strong strong truncate'>add(str, priorityScore)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -1976,7 +2109,7 @@ Elements in this queue must be strings</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>add(str: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+    <div class='pre p1 fill-light mt0'>add(str: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, priorityScore: any)</div>
    
   
   
@@ -1997,6 +2130,15 @@ Elements in this queue must be strings</p>
             <span class='code bold'>str</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    some string to add
 
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>priorityScore</span> <code class='quiet'>(any
+            = <code>Infinity</code>)</code>
+	    
           </div>
           
         </div>
@@ -2465,6 +2607,54 @@ Elements in this queue must be strings</p>
  
   
     <div class='pre p1 fill-light mt0'>reset()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='queuesortbypriorityscore'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>sortByPriorityScore()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>If a priority score is given to the elements, then we can sort the queue based on that</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>sortByPriorityScore()</div>
    
   
   

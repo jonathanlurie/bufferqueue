@@ -75,7 +75,7 @@ class PriorityQueue {
    * @param {number} priority - the priority (must be in [0, level-1])
    * @param {boolean} true if added, false if not (because already in with a higher priority)
    */
-  add(str, priority) {
+  add(str, priority, priorityScore=Infinity) {
     let existingPriority = this.getPriority(str)
 
     if(existingPriority >= priority) {
@@ -86,7 +86,7 @@ class PriorityQueue {
       this.remove(str)
     }
 
-    this._qs[priority].add(str)
+    this._qs[priority].add(str, priorityScore)
     return true
   }
 
@@ -229,6 +229,17 @@ class PriorityQueue {
     }
 
     return status
+  }
+
+
+  /**
+   * If a priotrity score is given to the elements, then each level of priority can
+   * have their element sorted within.
+   */
+  sortWithinLevel(){
+    for(let i=0; i<this._qs.length; i++) {
+      this._qs[i].sortByPriorityScore()
+    }
   }
 
 }
