@@ -62,6 +62,16 @@ class BufferQueue extends EventManager {
 
 
   /**
+   * Checks if a given url is currently being downloaded
+   * @param {string} str - string to verify
+   * @return {boolean} true if being downloaded, false if not
+   */
+  isDownloadInProcess(str){
+    return (str in this._dlControllers)
+  }
+
+
+  /**
    * Add a string to the queue with a given priority.
    * If the string is already present in the queue with the same level of priority or higher, then nothing is done.
    * If the string is already present but with a different level of priority, then
@@ -74,6 +84,10 @@ class BufferQueue extends EventManager {
    * @param {boolean} true if added, false if not (because already in with a higher priority)
    */
   add(str, priority, priorityScore=Infinity) {
+    if(this.isDownloadInProcess(str)){
+      return
+    }
+
     if(this._pq.add(str, priority, priorityScore)){
       this.emit('added', [str, priority])
       this._tryNext()
@@ -134,7 +148,7 @@ class BufferQueue extends EventManager {
    */
   reset() {
     this._pq.reset()
-    this._dlControllers = {}
+    // this._dlControllers = {} // if we reset _dlControllers then we may relaunch a DL that is already in process
     this.emit('reseted', [])
   }
 
@@ -148,6 +162,7 @@ class BufferQueue extends EventManager {
   abort(str) {
     if(str in this._dlControllers) {
       this._dlControllers[str].abort()
+      delete this._dlControllers[str]
     }
   }
 
@@ -159,6 +174,7 @@ class BufferQueue extends EventManager {
     let k = Object.keys(this._dlControllers)
     for(let i=0; i<k.length; i++) {
       this._dlControllers[k[i]].abort()
+      delete this._dlControllers[k[i]]
     }
   }
 

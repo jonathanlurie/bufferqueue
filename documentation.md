@@ -8,59 +8,61 @@
         -   [Parameters][4]
     -   [has][5]
         -   [Parameters][6]
-    -   [add][7]
+    -   [isDownloadInProcess][7]
         -   [Parameters][8]
-    -   [isEmpty][9]
-    -   [size][10]
-        -   [Parameters][11]
-    -   [sizePerPriority][12]
-    -   [remove][13]
-        -   [Parameters][14]
-    -   [reset][15]
-    -   [abort][16]
-        -   [Parameters][17]
-    -   [abortAll][18]
-    -   [getStatus][19]
-    -   [sortWithinLevel][20]
--   [EventManager][21]
-    -   [on][22]
-        -   [Parameters][23]
-    -   [emit][24]
+    -   [add][9]
+        -   [Parameters][10]
+    -   [isEmpty][11]
+    -   [size][12]
+        -   [Parameters][13]
+    -   [sizePerPriority][14]
+    -   [remove][15]
+        -   [Parameters][16]
+    -   [reset][17]
+    -   [abort][18]
+        -   [Parameters][19]
+    -   [abortAll][20]
+    -   [getStatus][21]
+    -   [sortWithinLevel][22]
+-   [EventManager][23]
+    -   [on][24]
         -   [Parameters][25]
--   [PriorityQueue][26]
-    -   [Parameters][27]
-    -   [getPriority][28]
-        -   [Parameters][29]
-    -   [has][30]
+    -   [emit][26]
+        -   [Parameters][27]
+-   [PriorityQueue][28]
+    -   [Parameters][29]
+    -   [getPriority][30]
         -   [Parameters][31]
-    -   [add][32]
+    -   [has][32]
         -   [Parameters][33]
-    -   [pop_ORIG][34]
-    -   [pop][35]
-    -   [isEmpty][36]
-    -   [size][37]
-        -   [Parameters][38]
-    -   [sizePerPriority][39]
-    -   [remove][40]
-        -   [Parameters][41]
-    -   [reset][42]
-    -   [getStatus][43]
-    -   [sortWithinLevel][44]
--   [Queue][45]
-    -   [add][46]
-        -   [Parameters][47]
-    -   [has][48]
+    -   [add][34]
+        -   [Parameters][35]
+    -   [pop_ORIG][36]
+    -   [pop][37]
+    -   [isEmpty][38]
+    -   [size][39]
+        -   [Parameters][40]
+    -   [sizePerPriority][41]
+    -   [remove][42]
+        -   [Parameters][43]
+    -   [reset][44]
+    -   [getStatus][45]
+    -   [sortWithinLevel][46]
+-   [Queue][47]
+    -   [add][48]
         -   [Parameters][49]
-    -   [pop][50]
-    -   [isEmpty][51]
-    -   [size][52]
-        -   [Parameters][53]
-    -   [first][54]
-    -   [last][55]
-    -   [remove][56]
-        -   [Parameters][57]
-    -   [reset][58]
-    -   [sortByPriorityScore][59]
+    -   [has][50]
+        -   [Parameters][51]
+    -   [pop][52]
+    -   [isEmpty][53]
+    -   [size][54]
+        -   [Parameters][55]
+    -   [first][56]
+    -   [last][57]
+    -   [remove][58]
+        -   [Parameters][59]
+    -   [reset][60]
+    -   [sortByPriorityScore][61]
 
 ## BufferQueue
 
@@ -80,7 +82,7 @@ Emitted events:
 
 ### Parameters
 
--   `options` **[Object][60]** the option object
+-   `options` **[Object][62]** the option object
 
 ### getPriority
 
@@ -88,9 +90,9 @@ Get the level of priority of a given file
 
 #### Parameters
 
--   `str` **[string][61]** URL of the file to check
+-   `str` **[string][63]** URL of the file to check
 
-Returns **[number][62]** zero is the highest priority, -1 means the element is NOT
+Returns **[number][64]** zero is the highest priority, -1 means the element is NOT
 in the queue
 
 ### has
@@ -100,10 +102,20 @@ level only.
 
 #### Parameters
 
--   `str` **[string][61]** string to verify the presence in the queue
--   `priority` **[number][62]** OPTIONAL the priority (must be in [0, level-1]) (optional, default `-1`)
+-   `str` **[string][63]** string to verify the presence in the queue
+-   `priority` **[number][64]** OPTIONAL the priority (must be in [0, level-1]) (optional, default `-1`)
 
-Returns **[boolean][63]** 
+Returns **[boolean][65]** 
+
+### isDownloadInProcess
+
+Checks if a given url is currently being downloaded
+
+#### Parameters
+
+-   `str` **[string][63]** string to verify
+
+Returns **[boolean][65]** true if being downloaded, false if not
 
 ### add
 
@@ -116,16 +128,16 @@ Emits the event 'added' with the str as argument if properly added.
 
 #### Parameters
 
--   `str` **[string][61]** the string to add
--   `priority` **[number][62]** the priority (must be in [0, level-1])
+-   `str` **[string][63]** the string to add
+-   `priority` **[number][64]** the priority (must be in [0, level-1])
 -   `priorityScore`   (optional, default `Infinity`)
--   `true` **[boolean][63]** if added, false if not (because already in with a higher priority)
+-   `true` **[boolean][65]** if added, false if not (because already in with a higher priority)
 
 ### isEmpty
 
 Check if the priority queue is empty (= if all the per-level-queues are all empty)
 
-Returns **[boolean][63]** true if empty, false if not empty
+Returns **[boolean][65]** true if empty, false if not empty
 
 ### size
 
@@ -134,14 +146,14 @@ level of priority
 
 #### Parameters
 
--   `priority` **[number][62]** OPTIONAL level of priority
--   `number` **[number][62]** of elements
+-   `priority` **[number][64]** OPTIONAL level of priority
+-   `number` **[number][64]** of elements
 
 ### sizePerPriority
 
 Get the size of the queue for each priority level
 
-Returns **[array][64]** 
+Returns **[array][66]** 
 
 ### remove
 
@@ -154,9 +166,9 @@ Emits the event 'removed' if the str as argument if properly removed
 #### Parameters
 
 -   `str`  
--   `null-null` **[string][61]** str, the element to remove
+-   `null-null` **[string][63]** str, the element to remove
 
-Returns **([string][61] | null)** the element that was jsut removed
+Returns **([string][63] | null)** the element that was jsut removed
 
 ### reset
 
@@ -172,7 +184,7 @@ Note: once a file is aborted, it is no longer in a queue.
 
 #### Parameters
 
--   `str` **[string][61]** the URL of the file to abort
+-   `str` **[string][63]** the URL of the file to abort
 
 ### abortAll
 
@@ -183,7 +195,7 @@ Abort all the current downloads. `aborted` event will be emitted.
 Get a string status of the prioirty queue size per level and the number of
 files currently being downloaded.
 
-Returns **[string][61]** 
+Returns **[string][63]** 
 
 ### sortWithinLevel
 
@@ -200,8 +212,8 @@ Define an event, with a name associated with a function
 
 #### Parameters
 
--   `eventName` **[String][61]** Name to give to the event
--   `callback` **[Function][65]** function associated to the even
+-   `eventName` **[String][63]** Name to give to the event
+-   `callback` **[Function][67]** function associated to the even
 
 ### emit
 
@@ -210,8 +222,8 @@ they will be called in the order they were declared.
 
 #### Parameters
 
--   `eventName` **[string][61]** name of the event to fire.
--   `args` **[array][64]** argument to call the callback with.
+-   `eventName` **[string][63]** name of the event to fire.
+-   `args` **[array][66]** argument to call the callback with.
     Note that within the callback, those arguments will be "flattened" and not as an array. (optional, default `[]`)
 
 ## PriorityQueue
@@ -234,7 +246,7 @@ Get the level of priority of a given string
 
 -   `str`  
 
-Returns **[number][62]** zero is the highest priority, -1 means the element is NOT
+Returns **[number][64]** zero is the highest priority, -1 means the element is NOT
 in the queue
 
 ### has
@@ -244,10 +256,10 @@ level only.
 
 #### Parameters
 
--   `str` **[string][61]** string to verify the presence in the queue
--   `priority` **[number][62]** OPTIONAL the priority (must be in [0, level-1]) (optional, default `-1`)
+-   `str` **[string][63]** string to verify the presence in the queue
+-   `priority` **[number][64]** OPTIONAL the priority (must be in [0, level-1]) (optional, default `-1`)
 
-Returns **[boolean][63]** 
+Returns **[boolean][65]** 
 
 ### add
 
@@ -258,16 +270,16 @@ it is removed and added with the provided level or priority.
 
 #### Parameters
 
--   `str` **[string][61]** the string to add
--   `priority` **[number][62]** the priority (must be in [0, level-1])
+-   `str` **[string][63]** the string to add
+-   `priority` **[number][64]** the priority (must be in [0, level-1])
 -   `priorityScore`   (optional, default `Infinity`)
--   `true` **[boolean][63]** if added, false if not (because already in with a higher priority)
+-   `true` **[boolean][65]** if added, false if not (because already in with a higher priority)
 
 ### pop_ORIG
 
 Get the the element with the highest priority and remove it from the queue
 
-Returns **([string][61] | null)** can return null if the queue is empty
+Returns **([string][63] | null)** can return null if the queue is empty
 
 ### pop
 
@@ -279,7 +291,7 @@ elements in higher priority queues
 
 Check if the priority queue is empty (= if all the per-level-queues are all empty)
 
-Returns **[boolean][63]** true if empty, false if not empty
+Returns **[boolean][65]** true if empty, false if not empty
 
 ### size
 
@@ -288,14 +300,14 @@ level of priority
 
 #### Parameters
 
--   `priority` **[number][62]** OPTIONAL level of priority (optional, default `-1`)
--   `number` **[number][62]** of elements
+-   `priority` **[number][64]** OPTIONAL level of priority (optional, default `-1`)
+-   `number` **[number][64]** of elements
 
 ### sizePerPriority
 
 Get the size of the queue for each priority level
 
-Returns **[array][64]** 
+Returns **[array][66]** 
 
 ### remove
 
@@ -306,9 +318,9 @@ Remove an element. If null is returned, this means the element was not in the qu
 #### Parameters
 
 -   `str`  
--   `null-null` **[string][61]** str, the element to remove
+-   `null-null` **[string][63]** str, the element to remove
 
-Returns **([string][61] | null)** the element that was jsut removed
+Returns **([string][63] | null)** the element that was jsut removed
 
 ### reset
 
@@ -318,7 +330,7 @@ Reset the whole priority queue, empty it all. No value returned.
 
 Get a string status about the queue length per level
 
-Returns **[string][61]** 
+Returns **[string][63]** 
 
 ### sortWithinLevel
 
@@ -337,7 +349,7 @@ Add a string at the end of the queue. Not added again if already in there.
 
 #### Parameters
 
--   `str` **[string][61]** some string to add
+-   `str` **[string][63]** some string to add
 -   `priorityScore`   (optional, default `Infinity`)
 
 ### has
@@ -348,19 +360,19 @@ Check if this queue contains a given string
 
 -   `str`  
 
-Returns **[boolean][63]** true if this queue has a given string, false if not
+Returns **[boolean][65]** true if this queue has a given string, false if not
 
 ### pop
 
 Extract the first element
 
-Returns **[string][61]** the first element
+Returns **[string][63]** the first element
 
 ### isEmpty
 
 Is the queue empty?
 
-Returns **[boolean][63]** true if empty, false if not
+Returns **[boolean][65]** true if empty, false if not
 
 ### size
 
@@ -375,14 +387,14 @@ Get the number of element in the queue
 Get the first element of the queue without removing it
 (Not sure how useful is that)
 
-Returns **[string][61]** 
+Returns **[string][63]** 
 
 ### last
 
 Get the last element of the queue without removing it
 (Not sure how useful is that)
 
-Returns **[string][61]** 
+Returns **[string][63]** 
 
 ### remove
 
@@ -390,9 +402,9 @@ Remove an element from the queue and returns it
 
 #### Parameters
 
--   `str` **[string][61]** an element to remove
+-   `str` **[string][63]** an element to remove
 
-Returns **([string][61] | null)** 
+Returns **([string][63] | null)** 
 
 ### reset
 
@@ -414,120 +426,124 @@ If a priority score is given to the elements, then we can sort the queue based o
 
 [6]: #parameters-2
 
-[7]: #add
+[7]: #isdownloadinprocess
 
 [8]: #parameters-3
 
-[9]: #isempty
+[9]: #add
 
-[10]: #size
+[10]: #parameters-4
 
-[11]: #parameters-4
+[11]: #isempty
 
-[12]: #sizeperpriority
+[12]: #size
 
-[13]: #remove
+[13]: #parameters-5
 
-[14]: #parameters-5
+[14]: #sizeperpriority
 
-[15]: #reset
+[15]: #remove
 
-[16]: #abort
+[16]: #parameters-6
 
-[17]: #parameters-6
+[17]: #reset
 
-[18]: #abortall
+[18]: #abort
 
-[19]: #getstatus
+[19]: #parameters-7
 
-[20]: #sortwithinlevel
+[20]: #abortall
 
-[21]: #eventmanager
+[21]: #getstatus
 
-[22]: #on
+[22]: #sortwithinlevel
 
-[23]: #parameters-7
+[23]: #eventmanager
 
-[24]: #emit
+[24]: #on
 
 [25]: #parameters-8
 
-[26]: #priorityqueue
+[26]: #emit
 
 [27]: #parameters-9
 
-[28]: #getpriority-1
+[28]: #priorityqueue
 
 [29]: #parameters-10
 
-[30]: #has-1
+[30]: #getpriority-1
 
 [31]: #parameters-11
 
-[32]: #add-1
+[32]: #has-1
 
 [33]: #parameters-12
 
-[34]: #pop_orig
+[34]: #add-1
 
-[35]: #pop
+[35]: #parameters-13
 
-[36]: #isempty-1
+[36]: #pop_orig
 
-[37]: #size-1
+[37]: #pop
 
-[38]: #parameters-13
+[38]: #isempty-1
 
-[39]: #sizeperpriority-1
+[39]: #size-1
 
-[40]: #remove-1
+[40]: #parameters-14
 
-[41]: #parameters-14
+[41]: #sizeperpriority-1
 
-[42]: #reset-1
+[42]: #remove-1
 
-[43]: #getstatus-1
+[43]: #parameters-15
 
-[44]: #sortwithinlevel-1
+[44]: #reset-1
 
-[45]: #queue
+[45]: #getstatus-1
 
-[46]: #add-2
+[46]: #sortwithinlevel-1
 
-[47]: #parameters-15
+[47]: #queue
 
-[48]: #has-2
+[48]: #add-2
 
 [49]: #parameters-16
 
-[50]: #pop-1
+[50]: #has-2
 
-[51]: #isempty-2
+[51]: #parameters-17
 
-[52]: #size-2
+[52]: #pop-1
 
-[53]: #parameters-17
+[53]: #isempty-2
 
-[54]: #first
+[54]: #size-2
 
-[55]: #last
+[55]: #parameters-18
 
-[56]: #remove-2
+[56]: #first
 
-[57]: #parameters-18
+[57]: #last
 
-[58]: #reset-2
+[58]: #remove-2
 
-[59]: #sortbypriorityscore
+[59]: #parameters-19
 
-[60]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[60]: #reset-2
 
-[61]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[61]: #sortbypriorityscore
 
-[62]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[62]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[63]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[63]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[64]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[64]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[65]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[65]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[66]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[67]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
