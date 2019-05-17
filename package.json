@@ -1,7 +1,7 @@
 {
   "name": "bufferqueue",
-  "version": "0.1.1",
-  "description": "A starting point to create ES6 module for browser",
+  "version": "0.1.2",
+  "description": "multilevel priority queue for downloading stuff from browser",
   "repository": "jonathanlurie/bufferqueue",
   "main": "lib/bufferqueue.js",
   "module": "es/bufferqueue.js",
