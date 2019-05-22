@@ -493,7 +493,9 @@ class BufferQueue extends EventManager {
 
 
   /**
-   *
+   * Checks if a given url is currently being downloaded
+   * @param {string} str - string to verify
+   * @return {boolean} true if being downloaded, false if not
    */
   isDownloadInProcess(str){
     return (str in this._dlControllers)

@@ -3,6 +3,12 @@ The point of this JS library is to prioritise the download of a large number of 
 
 Each level is a *first in first out* list and each element is identified by its URL.
 
+## Install
+
+``` bash
+npm install --save @jonathanlurie/bufferqueue
+```
+
 ## Usage
 Instanciate the main object:
 ```javascript

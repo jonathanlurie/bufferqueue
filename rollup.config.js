@@ -6,13 +6,16 @@ import commonjs from 'rollup-plugin-commonjs'
 import webworkify from 'rollup-plugin-webworkify'
 import pkg from './package.json'
 
+let packageNameParts = pkg.name.split('/')
+let packageName = packageNameParts[packageNameParts.length - 1]
+
 const configurations = [
   // UMD
   {
     input: pkg.entry,
     output: {
       file: pkg.unpkg,
-      name: pkg.name,
+      name: packageName,
       sourcemap: true,
       format: 'umd',
     },
@@ -30,36 +33,13 @@ const configurations = [
     input: pkg.entry,
     output: {
       file: pkg.module,
-      name: pkg.name,
+      name: packageName,
       sourcemap: true,
       format: 'es',
     },
     external: [
       ...Object.keys(pkg.dependencies || {}),
     ],
-    plugins: [
-      resolve(),
-      commonjs({ include: 'node_modules/**' }),
-      globals(),
-      builtins(),
-      webworkify({ pattern: '**/*.worker.js' }),
-    ],
-  },
-
-
-  // CJS
-  {
-    input: pkg.entry,
-    output: {
-      file: pkg.main,
-      name: pkg.name,
-      sourcemap: true,
-      format: 'cjs',
-    },
-    external: [
-      ...Object.keys(pkg.dependencies || {}),
-    ],
-
     plugins: [
       resolve(),
       commonjs({ include: 'node_modules/**' }),
@@ -79,7 +59,7 @@ if (process.env.NODE_ENV === 'production') {
       input: pkg.entry,
       output: {
         file: pkg.unpkg.replace('.js', '.min.js'),
-        name: pkg.name,
+        name: packageName,
         sourcemap: false,
         format: 'umd',
       },
